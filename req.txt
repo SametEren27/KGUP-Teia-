@@ -1,12 +1,12 @@
-pandas==2.2.2
-numpy==1.26.4
-scikit-learn==1.5.1
-xgboost==2.1.0
-lightgbm==4.5.0
-joblib==1.4.2
-matplotlib==3.9.1
-fastapi==0.112.0
-uvicorn==0.30.5
-pydantic==2.8.2
-streamlit==1.37.1
-plotly==5.23.0
+streamlit
+pandas
+numpy
+plotly
+joblib
+scipy
+fpdf2
+torch --extra-index-url https://download.pytorch.org/whl/cpu
+psycopg2-binary
+sqlalchemy
+requests
+pytest

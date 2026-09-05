@@ -1,0 +1,33 @@
+name: Daily Grid Live ETL & Ingest
+
+on:
+  schedule:
+    # Her gün saat 00:30 UTC'de (Türkiye saatiyle 03:30) çalışır
+    - cron: '30 0 * * *'
+  workflow_dispatch: # GitHub arayüzünden elle tetikleme butonu
+
+jobs:
+  ingest-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repoyu Klonla
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Bağımlılıkları Yükle
+        run: |
+          pip install --upgrade pip
+          pip install pytest pandas numpy requests sqlalchemy psycopg2-binary scikit-learn
+
+      - name: 1. Pipeline Testlerini Çalıştır
+        run: python -m pytest tests/
+
+      - name: 2. Canlı Veriyi Çek ve Cloud DB'ye Bas
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          EPIAS_API_KEY: ${{ secrets.EPIAS_API_KEY }}
+        run: python scripts/daily_live_ingest.py
